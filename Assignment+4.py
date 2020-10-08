@@ -64,9 +64,15 @@ def doc_to_synsets(doc):
     """
     
 
-    # Your Code Here
+    tokens = nltk.word_tokenize(doc)
+    pos = nltk.pos_tag(tokens)
+    tags = [tag[1] for tag in pos]
+    wntag = [convert_tag(tag) for tag in tags]
+    ans = list(zip(tokens,wntag))
+    sets = [wn.synsets(x,y) for x,y in ans]
+    final = [val[0] for val in sets if len(val) > 0]
     
-    return # Your Answer Here
+    return final
 
 
 def similarity_score(s1, s2):
@@ -91,9 +97,14 @@ def similarity_score(s1, s2):
     """
     
     
-    # Your Code Here
+    s=[]
+    for i1 in s1:
+        r=[]
+        scores=[x for x in [i1.path_similarity(i2) for i2 in s2]if x is not None]
+        if scores:
+            s.append(max(scores))
     
-    return # Your Answer Here
+    return sum(s)/len(s)
 
 
 def document_path_similarity(doc1, doc2):
